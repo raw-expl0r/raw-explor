@@ -110,15 +110,34 @@ main { flex: 1; padding: 0 var(--gutter) 80px; }
 .page-head { padding: 48px 0 40px; }
 
 /* ----- Grille de la galerie (colonnes type « maçonnerie ») ----- */
-.gallery {
+.batch {
   columns: 3;
   column-gap: 14px;
 }
 /* Téléphone et tablette : 2 colonnes */
 @media (max-width: 900px) {
-  .gallery { columns: 2; column-gap: 8px; }
+  .batch { columns: 2; column-gap: 8px; }
   .gallery figure { margin-bottom: 8px; }
 }
+
+/* Bouton « Voir plus » */
+.more-btn {
+  display: block;
+  margin: 34px auto 0;
+  background: none;
+  border: 1px solid var(--muted);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 14px 34px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.more-btn:hover { border-color: var(--red); color: var(--red); }
+.more-btn[hidden] { display: none; }
 
 .gallery figure {
   break-inside: avoid;
