@@ -164,13 +164,9 @@ function addRow(label, value) {
   row.append(l, v);
   exifBox.appendChild(row);
 }
-async function readExif(path) {
-  if (exifCache[path]) return exifCache[path];
-  let d = null;
-  try {
-    d = await exifr.parse(url(path), ["Make", "Model", "LensModel", "FocalLength", "FNumber", "ExposureTime", "ISO"]);
-  } catch (e) { d = null; }
-  exifCache[path] = d || {};
+async function loadExif(path) {
+  if (path in exifCache) return exifCache[path];
+  exifCache[path] = await readExif(url(path));   // lecteur défini dans js/exif.js
   return exifCache[path];
 }
 async function showExif(path, x, y) {
@@ -180,7 +176,7 @@ async function showExif(path, x, y) {
   exifBox.appendChild(wait);
   exifBox.hidden = false;
   place(x, y);
-  const d = await readExif(path);
+  const d = (await loadExif(path)) || {};
   exifBox.innerHTML = "";
   const title = document.createElement("div");
   title.className = "exif-title"; title.textContent = "Fiche technique";
@@ -194,7 +190,7 @@ async function showExif(path, x, y) {
   addRow("ISO", d.ISO ? String(d.ISO) : "");
   if (!exifBox.querySelector(".exif-row")) {
     const none = document.createElement("div");
-    none.className = "exif-row"; none.textContent = "Informations non disponibles";
+    none.className = "exif-row"; none.textContent = "Métadonnées absentes de ce fichier";
     exifBox.appendChild(none);
   }
   place(x, y);
@@ -220,7 +216,7 @@ document.addEventListener("contextmenu", e => {
   if (e.target.tagName !== "IMG") return;
   e.preventDefault();
   const p = pathOf(e.target);
-  if (p && typeof exifr !== "undefined") showExif(p, e.clientX, e.clientY);
+  if (p) showExif(p, e.clientX, e.clientY);
 });
 document.addEventListener("dragstart", e => {
   if (e.target.tagName === "IMG") e.preventDefault();
