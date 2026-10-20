@@ -1,0 +1,284 @@
+/* ===== RAW EXPL0R — feuille de style =====
+   Palette reprise de la carte de visite :
+   fond quasi noir, accent rouge, accent cyan, texte blanc. */
+
+:root {
+  --bg: #0a0b10;
+  --bg-soft: #11131b;
+  --text: #f3f3f5;
+  --muted: #9b9dab;
+  --line: #23252f;
+  --red: #e5252a;
+  --cyan: #2aa8c9;
+  --font: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-title: "Archivo", "Inter", "Helvetica Neue", Arial, sans-serif;
+  --gutter: clamp(20px, 4vw, 56px);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* ----- Filet bicolore en haut de page (rappel de la barre cyan/rouge de la carte) ----- */
+body::before {
+  content: "";
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, var(--cyan) 0 50%, var(--red) 50% 100%);
+}
+
+/* ----- En-tête ----- */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px 32px;
+  padding: 26px var(--gutter);
+}
+
+.logo {
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.logo span { color: var(--red); }
+
+.site-nav { display: flex; gap: clamp(18px, 3vw, 38px); }
+
+.site-nav a {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 6px 0;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+.site-nav a:hover { color: var(--text); }
+.site-nav a[aria-current="page"] {
+  color: var(--text);
+  border-bottom-color: var(--red);
+}
+
+/* ----- Contenu ----- */
+main { flex: 1; padding: 0 var(--gutter) 80px; }
+
+.eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 14px;
+}
+
+.page-title {
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+
+.lead {
+  color: var(--muted);
+  font-size: 1.1rem;
+  max-width: 640px;
+}
+
+.page-head { padding: 48px 0 40px; }
+
+/* ----- Grille de la galerie (colonnes type « maçonnerie ») ----- */
+.gallery {
+  columns: 3 340px;
+  column-gap: 14px;
+}
+
+.gallery figure {
+  break-inside: avoid;
+  margin: 0 0 14px;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-soft);
+}
+
+.gallery button.thumb {
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+.gallery img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.6s ease, opacity 0.4s;
+}
+.gallery figure:hover img { transform: scale(1.025); }
+
+.empty { color: var(--muted); padding: 40px 0; }
+
+/* ----- Visionneuse plein écran ----- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(6, 7, 11, 0.97);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 56px 70px 70px;
+}
+.lightbox.open { display: flex; }
+.lightbox img {
+  max-width: 100%;
+  max-height: calc(100vh - 150px);
+  object-fit: contain;
+}
+.lb-caption {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.lb-caption strong { color: var(--text); font-weight: 600; margin-right: 12px; }
+
+.lb-btn {
+  position: absolute;
+  background: none;
+  border: 0;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 2rem;
+  line-height: 1;
+  padding: 14px;
+  opacity: 0.7;
+  transition: opacity 0.2s, color 0.2s;
+}
+.lb-btn:hover { opacity: 1; color: var(--red); }
+.lb-close { top: 14px; right: 18px; }
+.lb-prev { left: 8px; top: 50%; transform: translateY(-50%); }
+.lb-next { right: 8px; top: 50%; transform: translateY(-50%); }
+
+/* ----- Page À propos ----- */
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(240px, 380px) 1fr;
+  gap: clamp(32px, 6vw, 90px);
+  align-items: start;
+}
+
+.portrait {
+  position: sticky;
+  top: 24px;
+  aspect-ratio: 4 / 5;
+  background: var(--bg-soft);
+  border-left: 3px solid var(--cyan);
+  overflow: hidden;
+}
+.portrait img { width: 100%; height: 100%; object-fit: cover; }
+
+.prose h2 {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin: 46px 0 14px;
+}
+.prose h2:first-child { margin-top: 0; }
+.prose p { color: #d4d5dc; margin-bottom: 16px; max-width: 680px; }
+
+.tech { list-style: none; margin-top: 4px; }
+.tech li {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 18px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+  color: #d4d5dc;
+  max-width: 760px;
+}
+.tech li:last-child { border-bottom: 1px solid var(--line); }
+.tech b {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-top: 3px;
+}
+
+/* ----- Page Contact ----- */
+.contact-list { margin-top: 10px; max-width: 560px; }
+.contact-item { padding: 26px 0; border-top: 1px solid var(--line); }
+.contact-item:last-child { border-bottom: 1px solid var(--line); }
+.contact-item .label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 6px;
+}
+.contact-item a, .contact-item p {
+  font-size: clamp(1.2rem, 3vw, 1.7rem);
+  font-weight: 400;
+}
+.contact-item a { border-bottom: 1px solid transparent; transition: border-color 0.2s, color 0.2s; }
+.contact-item a:hover { color: var(--red); border-bottom-color: var(--red); }
+
+/* ----- Pied de page ----- */
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  padding: 26px var(--gutter);
+  border-top: 1px solid var(--line);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.site-footer a:hover { color: var(--red); }
+
+/* ----- Mobile ----- */
+@media (max-width: 760px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .portrait { position: static; max-width: 340px; }
+  .tech li { grid-template-columns: 1fr; gap: 4px; }
+  .lightbox { padding: 56px 12px 80px; }
+  .lb-prev { top: auto; bottom: 14px; left: 14px; transform: none; }
+  .lb-next { top: auto; bottom: 14px; right: 14px; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
+}
