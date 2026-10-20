@@ -107,6 +107,14 @@ document.addEventListener("keydown", e => {
   if (e.key === "ArrowRight") step(1);
 });
 
+/* ----- Dissuasion : pas de clic droit ni de glisser-déposer sur les photos ----- */
+document.addEventListener("contextmenu", e => {
+  if (e.target.tagName === "IMG") e.preventDefault();
+});
+document.addEventListener("dragstart", e => {
+  if (e.target.tagName === "IMG") e.preventDefault();
+});
+
 /* ----- Démarrage : lit photos.json puis mélange ----- */
 fetch("photos.json", { cache: "no-cache" })
   .then(r => { if (!r.ok) throw new Error("photos.json introuvable"); return r.json(); })
