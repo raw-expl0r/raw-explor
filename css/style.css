@@ -141,6 +141,14 @@ main { flex: 1; padding: 0 var(--gutter) 80px; }
 
 .empty { color: var(--muted); padding: 40px 0; }
 
+/* Dissuasion : photos non sélectionnables / non glissables, pas de menu d'appui long sur mobile */
+.gallery img, .lightbox img, .portrait img {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+
 /* ----- Visionneuse plein écran ----- */
 .lightbox {
   position: fixed;
