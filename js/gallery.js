@@ -26,43 +26,70 @@ function url(path) {
   return path.split("/").map(encodeURIComponent).join("/");
 }
 
-/* ----- Affichage de la grille ----- */
+/* ----- Affichage de la grille : 9 photos à la fois sur ordinateur (10 sur mobile), puis « Voir plus » ----- */
+let shown = 0;
+const moreBtn = document.createElement("button");
+moreBtn.type = "button";
+moreBtn.className = "more-btn";
+moreBtn.textContent = "Voir plus";
+moreBtn.hidden = true;
+gallery.after(moreBtn);
+
+function batchSize() {
+  return window.matchMedia("(max-width: 900px)").matches ? 10 : 9;
+}
+
+function makeFigure(path, i) {
+  const fig = document.createElement("figure");
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "thumb";
+  btn.setAttribute("aria-label", "Agrandir la photo " + (i + 1));
+  const img = document.createElement("img");
+  img.alt = "Photographie RAW EXPL0R " + (i + 1);
+  img.loading = "lazy";
+  img.decoding = "async";
+  // Si une image échoue : on réessaie une fois, sinon on la masque (et on l'indique dans la console)
+  let retried = false;
+  img.addEventListener("error", () => {
+    if (!retried) {
+      retried = true;
+      setTimeout(() => { img.src = url(path) + "?r=" + Date.now(); }, 1500);
+    } else {
+      console.warn("Photo impossible à charger :", path);
+      fig.remove();
+    }
+  });
+  img.dataset.path = path;
+  img.src = url(path);
+  btn.appendChild(img);
+  btn.addEventListener("click", () => openLightbox(i));
+  fig.appendChild(btn);
+  return fig;
+}
+
+function showMore() {
+  const batch = document.createElement("div");
+  batch.className = "batch";
+  const end = Math.min(shown + batchSize(), current.length);
+  for (let i = shown; i < end; i++) batch.appendChild(makeFigure(current[i], i));
+  shown = end;
+  gallery.appendChild(batch);
+  moreBtn.hidden = shown >= current.length;
+}
+
 function render(list) {
   current = list;
+  shown = 0;
   gallery.innerHTML = "";
   if (!list.length) {
     gallery.innerHTML = '<p class="empty">Aucune photo pour le moment.</p>';
+    moreBtn.hidden = true;
     return;
   }
-  list.forEach((path, i) => {
-    const fig = document.createElement("figure");
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "thumb";
-    btn.setAttribute("aria-label", "Agrandir la photo " + (i + 1));
-    const img = document.createElement("img");
-    img.alt = "Photographie RAW EXPL0R " + (i + 1);
-    img.loading = "lazy";
-    img.decoding = "async";
-    // Si une image échoue : on réessaie une fois, sinon on la masque (et on l'indique dans la console)
-    let retried = false;
-    img.addEventListener("error", () => {
-      if (!retried) {
-        retried = true;
-        setTimeout(() => { img.src = url(path) + "?r=" + Date.now(); }, 1500);
-      } else {
-        console.warn("Photo impossible à charger :", path);
-        fig.remove();
-      }
-    });
-    img.dataset.path = path;
-    img.src = url(path);
-    btn.appendChild(img);
-    btn.addEventListener("click", () => openLightbox(i));
-    fig.appendChild(btn);
-    gallery.appendChild(fig);
-  });
+  showMore();
 }
+moreBtn.addEventListener("click", showMore);
 
 /* ----- Visionneuse plein écran ----- */
 const lb = document.createElement("div");
