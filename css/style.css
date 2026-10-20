@@ -111,8 +111,13 @@ main { flex: 1; padding: 0 var(--gutter) 80px; }
 
 /* ----- Grille de la galerie (colonnes type « maçonnerie ») ----- */
 .gallery {
-  columns: 3 340px;
+  columns: 3;
   column-gap: 14px;
+}
+/* Téléphone et tablette : 2 colonnes */
+@media (max-width: 900px) {
+  .gallery { columns: 2; column-gap: 8px; }
+  .gallery figure { margin-bottom: 8px; }
 }
 
 .gallery figure {
@@ -140,6 +145,38 @@ main { flex: 1; padding: 0 var(--gutter) 80px; }
 .gallery figure:hover img { transform: scale(1.025); }
 
 .empty { color: var(--muted); padding: 40px 0; }
+
+/* Fiche technique au clic droit */
+.exif-menu {
+  position: fixed;
+  z-index: 200;
+  min-width: 230px;
+  max-width: 320px;
+  padding: 14px 16px;
+  background: rgba(10, 11, 16, 0.96);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--cyan);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+  font-size: 0.82rem;
+}
+.exif-menu[hidden] { display: none; }
+.exif-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 8px;
+}
+.exif-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 5px 0;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+.exif-row b { color: var(--text); font-weight: 600; text-align: right; }
 
 /* Dissuasion : photos non sélectionnables / non glissables, pas de menu d'appui long sur mobile */
 .gallery img, .lightbox img, .portrait img {
@@ -191,6 +228,16 @@ main { flex: 1; padding: 0 var(--gutter) 80px; }
 }
 .lb-btn:hover { opacity: 1; color: var(--red); }
 .lb-close { top: 14px; right: 18px; }
+.lb-info {
+  top: 18px; left: 22px;
+  width: 36px; height: 36px;
+  padding: 0;
+  border: 1px solid var(--muted);
+  border-radius: 50%;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 1.15rem;
+}
 .lb-prev { left: 8px; top: 50%; transform: translateY(-50%); }
 .lb-next { right: 8px; top: 50%; transform: translateY(-50%); }
 
@@ -283,6 +330,7 @@ main { flex: 1; padding: 0 var(--gutter) 80px; }
   .portrait { position: static; max-width: 340px; }
   .tech li { grid-template-columns: 1fr; gap: 4px; }
   .lightbox { padding: 56px 12px 80px; }
+  .lb-info { top: auto; bottom: 22px; left: 50%; transform: translateX(-50%); }
   .lb-prev { top: auto; bottom: 14px; left: 14px; transform: none; }
   .lb-next { top: auto; bottom: 14px; right: 14px; transform: none; }
 }
