@@ -21,6 +21,11 @@ function shuffle(list) {
   return a;
 }
 
+/* ----- Adresse sûre pour tous les noms de fichiers (espaces, ', #, ?, accents...) ----- */
+function url(path) {
+  return path.split("/").map(encodeURIComponent).join("/");
+}
+
 /* ----- Affichage de la grille ----- */
 function render(list) {
   current = list;
@@ -36,10 +41,21 @@ function render(list) {
     btn.className = "thumb";
     btn.setAttribute("aria-label", "Agrandir la photo " + (i + 1));
     const img = document.createElement("img");
-    img.src = encodeURI(path);
     img.alt = "Photographie RAW EXPL0R " + (i + 1);
     img.loading = "lazy";
     img.decoding = "async";
+    // Si une image échoue : on réessaie une fois, sinon on la masque (et on l'indique dans la console)
+    let retried = false;
+    img.addEventListener("error", () => {
+      if (!retried) {
+        retried = true;
+        setTimeout(() => { img.src = url(path) + "?r=" + Date.now(); }, 1500);
+      } else {
+        console.warn("Photo impossible à charger :", path);
+        fig.remove();
+      }
+    });
+    img.src = url(path);
     btn.appendChild(img);
     btn.addEventListener("click", () => openLightbox(i));
     fig.appendChild(btn);
@@ -62,7 +78,7 @@ document.body.appendChild(lb);
 const lbImg = lb.querySelector("img");
 
 function show() {
-  lbImg.src = encodeURI(current[index]);
+  lbImg.src = url(current[index]);
   lbImg.alt = "Photographie RAW EXPL0R " + (index + 1);
 }
 function openLightbox(i) {
