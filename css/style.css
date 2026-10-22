@@ -309,6 +309,52 @@ main { flex: 1; padding: 0 var(--gutter) 80px; }
   padding-top: 3px;
 }
 
+/* ----- Widget Instagram ----- */
+.insta {
+  margin-top: 80px;
+  max-width: 760px;
+  padding: 26px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--red);
+}
+.insta-head { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.insta-avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--cyan); }
+.insta-avatar[hidden] { display: none; }
+.insta-id { flex: 1; min-width: 160px; }
+.insta-name { font-weight: 600; font-size: 1.05rem; }
+.insta-stats { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cyan); }
+.insta-follow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 11px 20px;
+  border: 1px solid var(--muted);
+  transition: border-color 0.2s, color 0.2s;
+}
+.insta-follow:hover { border-color: var(--red); color: var(--red); }
+
+.insta-body { display: flex; align-items: center; gap: 6px; margin-top: 22px; }
+.insta-strip { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; min-height: 0; }
+.insta-post { position: relative; display: block; aspect-ratio: 1 / 1; overflow: hidden; background: var(--bg); }
+.insta-post img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.insta-post:hover img { transform: scale(1.05); }
+.insta-tag {
+  position: absolute; top: 8px; right: 8px;
+  font-size: 0.8rem; color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+.insta-nav {
+  background: none; border: 0; color: var(--text);
+  font-size: 2rem; line-height: 1; padding: 8px 6px;
+  cursor: pointer; opacity: 0.8; transition: color 0.2s, opacity 0.2s;
+}
+.insta-nav:hover:not(:disabled) { color: var(--red); opacity: 1; }
+.insta-nav:disabled { opacity: 0.2; cursor: default; }
+.insta-nav[hidden] { display: none; }
+.insta-static .insta-body { display: none; }
+
 /* ----- Page Contact ----- */
 .contact-list { margin-top: 10px; max-width: 560px; }
 .contact-item { padding: 26px 0; border-top: 1px solid var(--line); }
