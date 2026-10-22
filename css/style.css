@@ -311,7 +311,7 @@ main { flex: 1; padding: 0 var(--gutter) 80px; }
 
 /* ----- Widget Instagram ----- */
 .insta {
-  margin-top: 80px;
+  margin-top: 56px;
   max-width: 760px;
   padding: 26px;
   background: var(--bg-soft);
